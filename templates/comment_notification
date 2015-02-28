@@ -1,0 +1,7 @@
+Subject: Comment on [{{.Bug.Id}}] {{.Bug.Title}}
+
+{{.Comment.User}} wrote a new {{if .Comment.Private}}*private* {{end}}comment on "{{.Bug.Title}}":
+
+{{.Comment.Text}}
+
+{{.BaseURL}}{{.Bug.Url}}

@@ -1,0 +1,218 @@
+<div ng-hide="!bug">
+<div class="titlearea {{privateclass}} clearfix">
+    <form ng-submit="submitTitle()" class="titletext form-inline pull-left">
+        {{bug.id}} -
+        <span class="title" ng-hide="editingTitle" ng-click="editTitle()">{{bug.title}}
+            <i class="sup icon-edit"></i>
+        </span>
+        <input class="title-input" ng-show="editingTitle" name="titleInput" ng-model="bug.title">
+        <input class="btn btn-medium" ng-show="editingTitle" type="submit" value="OK">
+    </form>
+  <div class="subs pull-right">
+    <a title="Click to stop watching this bug" ng-show="subscribed" ng-click="unsubscribe()">
+      <i class="icon-star starred"></i>
+    </a>
+    <a title="Click to watch this bug." ng-hide="subscribed || !auth.loggedin" ng-click="subscribe()">
+      <i class="icon-star-empty muted"></i>
+    </a>
+    <i ng-hide="auth.loggedin" class="icon-star-empty muted"></i>
+    ({{subcount}})
+  </div>
+</div>
+
+<cb-editor live="1" editing="editingDesc" editfn="editDesc" source="bug.description">
+</cb-editor>
+<div ng-show="editingDesc" class="clearfix">
+  <button ng-click="saveDesc()" class="btn pull-right">Save</button>
+</div>
+<div class="description">
+  <button ng-show="auth.loggedin && !editingDesc"
+          class="editbtn btn btn-mini pull-right" ng-click="editDesc()">
+    <i class="icon-edit"></i> Edit
+  </button>
+  <div ng-bind-html-unsafe="bug.description | markdownify"></div>
+</div>
+
+<hr>
+
+<p>
+  Filed {{bug.created_at | calDate}} by
+  <img ng-src="http://www.gravatar.com/avatar/{{bug.creator.md5}}?s=16">
+  {{bug.creator.email}}.
+</p>
+
+<div ng-show="currentuser.admin" class="btn-group pull-right">
+  <button type="button" ng-click="delete_bug()" class="btn btn-small btn-delete">
+    <span>Delete <i class="icon-trash"></i></span>
+  </button>
+</div>
+
+<div ng-show="currentuser.internal" class="btn-group pull-right" bs-buttons-checkbox>
+  <button type="button" class="btn btn-small btn-private" ng-model="bug.private">
+    <span ng-show="bug.private">Private <i class="icon-lock"></i></span>
+    <span ng-hide="bug.private">Public <i class="icon-unlock"></i></span>
+    </button>
+</div>
+
+<div class="form-inline">
+  <form>
+    Status:
+    <select ng-show="auth.loggedin" class="status" ng-model="bug.status" ng-options="state for state in availableStates">
+    </select>
+    <span ng-hide="auth.loggedin">{{bug.status}}</span>
+  </form>
+
+
+  <div class="tags">
+    <form>
+        Tags:
+        <span ng-repeat="tag in bug.tags">
+          <a class="bugpage-tag tag-{{tag}}" ng-click="listTag(tag)">{{tag}}</a>
+          <a ng-show="auth.loggedin" class="killtag" ng-click="killTag(tag)">
+            <i class="icon-remove"></i>
+          </a>
+        </span>
+        <input ng-show="auth.loggedin" type="text" id="tagbox" ui-keypress="{'enter space':'addTags($event)'}" ng-model="newtag" class="input-small"/>
+    </form>
+  </div>
+
+  <div>
+    <div ng-show="auth.loggedin" class="btn-group pull-right">
+      <button class="btn btn-small" ng-click="setOwnerToMe()">
+        <i class="icon-plus"></i> Assign to me</button>
+      <button class="btn btn-small" data-placement="left" data-title="Remind Me"
+              bs-popover="'/static/partials/remind.html'">
+        <i class="icon-calendar"></i> Remind Me</button>
+      <button class="btn btn-small" data-placement="left" data-title="Ping User"
+              bs-popover="'/static/partials/ping.html'"><i class="icon-bullhorn"></i> Ping</button>
+    </div>
+    <form ng-submit="submitOwner()">
+      <label ng-click="editOwner()">Assigned to
+        <span ng-hide="editingowner">
+          <span ng-show="bug.owner.email">
+            <img ng-src="http://www.gravatar.com/avatar/{{bug.owner.md5}}?s=16" />
+            {{bug.owner.email}}
+          </span>
+          <span ng-hide="bug.owner.email"><i class="icon-user"></i> <em>nobody</em></span>
+          <i class="icon-edit"></i>
+        </span>
+
+        <input ng-show="editingowner" type="text" ng-model-instant="bug.owner.email" class="ownerbox input-medium">
+        <button ng-show="editingowner" type="submit" class="btn">Save</button>
+      </label>
+    </form>
+  </div>
+
+  <div ng-show="bug.private && currentuser.internal">
+    <form ng-submit="submitSpecialUser()">
+      <label>Also Visible To: <input type="text" class="newuserbox input-medium"></label>
+      <button type="submit" class="btn">Save</button>
+    </form>
+    <ul>
+      <li class="unstyled" ng-repeat="o in bug.also_visible_to">
+        <img ng-src="http://www.gravatar.com/avatar/{{o.md5}}?s=24">
+        {{o.email}}
+        <a class="killuser" ng-click="rmSpecial(o)">
+          <i class="icon-remove"></i>
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<h3>Attachments</h3>
+<div ng-show="auth.loggedin" id="dropbox" class="dropbox" ng-class="dropClass"><span>{{dropText}}</span></div>
+<div ng-show="files.length">
+  <div ng-repeat="file in files.slice(0)">
+    <span>{{file.webkitRelativePath || file.name}}</span>
+    (<span ng-switch="file.size > 1024*1024">
+      <span ng-switch-when="true">{{file.size / 1024 / 1024 | number:2}} MB</span>
+      <span ng-switch-default>{{file.size / 1024 | number:2}} kB</span>
+    </span>)
+  </div>
+  <div ng-show="progressVisible">
+    <div class="percent">{{progress}}%</div>
+    <div class="progress-bar">
+      <div class="uploaded" ng-style="{'width': progress+'%'}"></div>
+    </div>
+  </div>
+</div>
+
+<div class="attachments">
+  <div class="attachment" ng-repeat="att in attachments">
+    <img ng-src="http://www.gravatar.com/avatar/{{att.user.md5}}?s=16">
+    <a target="_self" href="/api/bug/{{bug.id}}/attachments/{{att.id}}/{{att.filename}}">
+      {{att.filename}} ({{att.content_type}}, {{att.size | bytes}})
+    </a>
+    <button ng-click="deleteAttachment(att)" ng-show="att.mine"
+            class="btn btn-mini right">
+      <i class="icon-trash"></i>
+    </button>
+  </div>
+</div>
+
+<h3>Comments</h3>
+<div class="comments">
+  <div class="comment well well-small private-{{comment.private}}" ng-repeat="comment in comments | orderBy:auth.prefs.bug_details.commentSortOrder">
+    <div ng-show="comment.type == 'comment'">
+      <div ng-hide="comment.deleted">
+        <div class="author">
+          <img ng-src="http://www.gravatar.com/avatar/{{comment.user.md5}}?s=16">
+          {{comment.user.email}} commented {{comment.created_at | relDate}}
+          <button ng-click="deleteComment(comment)" ng-show="comment.mine"
+                  class="btn btn-mini pull-right">
+            <i class="icon-trash"></i>
+          </button>
+        </div>
+        <div class="comment-text" ng-bind-html-unsafe="comment.text | markdownify">
+        </div>
+      </div>
+      <div ng-show="comment.deleted">
+        <em class="muted">This comment has been deleted</em>
+        <button ng-click="unDeleteComment(comment)" ng-show="comment.mine"
+                class="btn btn-mini pull-right">
+          <i class="icon-undo"></i>
+        </button>
+      </div>
+    </div>
+    <div ng-show="comment.type == 'ping'">
+      <i class="icon-bullhorn"></i>
+      <img ng-src="http://www.gravatar.com/avatar/{{comment.from.md5}}?s=16">
+      {{comment.from.email}} pinged
+      <img ng-src="http://www.gravatar.com/avatar/{{comment.to.md5}}?s=16">
+      {{comment.to.email}} {{comment.created_at | relDate}}
+    </div>
+  </div>
+</div>
+
+<button ng-hide="addingcomment" ng-click="startComment()" ng-show="loggedin" class="btn">Add Comment</button>
+<div ng-show="addingcomment" class="clearfix">
+  <cb-editor live="1" editing="editingComment" editfn="editComment" source="draftcomment">
+  </cb-editor>
+  <div class="comment-preview well well-small">
+    <em class="muted">Draft Comment</em>
+    <div ng-bind-html-unsafe="draftcomment | markdownify"></div>
+  </div>
+  <button ng-click="postComment()" class="btn pull-right btn-success">
+    Post Comment
+  </button>
+  <label><input type="checkbox" ng-model="draftcommentpriv" name="private" /> Private</label>
+</div>
+
+<h3>History</h3>
+<ul class="unstyled">
+    <li ng-repeat="hi in history">
+    <span ng-show="hi.ModInfo.by">
+      <img ng-src="http://www.gravatar.com/avatar/{{hi.ModInfo.by.md5}}?s=16">
+      {{hi.ModInfo.by.email}}
+    </span>
+    <span ng-hide="hi.ModInfo.by"><em>somebody</em></span>
+    <span ng-switch on="hi.ModInfo.type">
+      <span ng-switch-when="created"><tt>created</tt></span>
+      <span ng-switch-when="">(unknown)</span>
+      <span ng-switch-default>changed <tt>{{hi.ModInfo.type}}</tt></span>
+    </span>
+    {{hi.Timestamp | relDate}}
+    </li>
+</ul>
+<div>

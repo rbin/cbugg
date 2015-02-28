@@ -1,0 +1,18 @@
+language: go
+node_js:
+  - 0.8
+
+before_script:
+  - export DISPLAY=:99.0
+  - sh -e /etc/init.d/xvfb start
+  - npm install -g testacular
+
+script:
+  - go get github.com/dustin/go-jsonpointer
+  - testacular start config/testacular.conf.js
+  - go test -v
+
+notifications:
+  email:
+    - dustin@couchbase.com
+    - marty.schoch@gmail.com

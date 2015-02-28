@@ -1,0 +1,16 @@
+<h2>By State</h2>
+<ul id="history" class="unstyled">
+    <li ng-repeat="ob in recent">
+      <img ng-src="http://www.gravatar.com/avatar/{{ob.user.md5}}?s=16">
+      {{ob.user.email}} {{ob.action}}
+      <a class="status-{{ob.status}}"
+         title="{{ob.title}}" href="/bug/{{ob.bugid}}">{{ob.bugid}}</a> {{ob.time | relDate}}
+    </li>
+</ul>
+<ul class="unstyled"> 
+    <li ng-repeat="ob in states">
+    <a href="/state/{{ob[0]}}">{{ob[0]}} ({{ob[1]}})</a>
+    </li>
+</ul>
+<hr/>
+<div ng-include src="'/static/partials/newbug.html'"></div>

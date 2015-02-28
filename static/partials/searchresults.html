@@ -1,0 +1,61 @@
+<div ng-show="result.inProgress">
+
+	<h3>Search for "{{result.query_string}}" in progress...</h3>
+	<div class="progress progress-striped active">
+
+		<div class="bar" style="width: 100%;"></div>
+	</div>
+
+</div>
+
+<div ng-show="result.errorMessage"
+	class="alert alert-error">
+	<span class="label label-important">Error</span> {{result.errorMessage}}
+</div>
+
+<div ng-hide="result.errorMessage || result.inProgress">
+
+    <div ng-controller="SearchCtrl">
+        <form ng-submit="search()" method="GET">
+	       <h3>Search
+	           <input ng-model="result.query_string" ng-required="true" type="text" class="search-query search-results-form" placeholder="Search">
+           </h3>
+        </form>
+    </div>
+
+	<div ng-show="result.warningMessage" class="alert alert-error">
+		<span class="label label-important">Warning</span> {{result.warningMessage}}
+	</div>
+
+	<!-- no results -->
+	<div ng-hide="result.pager.totalResults > 0" id="searchResultContainer" class="clearfix">
+		<h5>No bugs match this query </h5>
+
+	</div>
+
+	<!-- some results -->
+	<div ng-show="result.pager.totalResults > 0" id="searchResultContainer" class="clearfix">
+		<div class="container-fluid">
+			<div class="row-fluid">
+
+				<!-- facet information -->
+					<div class="span3"  ng-include src="'/static/partials/search-facets.html'">
+					</div>
+
+				<!-- search results table -->
+				<div class="span9">
+					<div ng-include src="'/static/partials/search-results-table.html'"></div>
+					<h5 class="pull-left">Displaying {{result.pager.firstResult}} -
+						{{result.pager.lastResult}} of {{result.pager.totalResults}} matching bugs</h5>
+					<div class="pagination pull-right" ng-include
+						src="'/static/partials/search-results-pager.html'"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+
+	<!-- file new bug -->
+	<hr />
+  <div ng-include src="'/static/partials/newbug.html'"></div>

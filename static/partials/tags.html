@@ -1,0 +1,13 @@
+<div class="titlearea clearfix">
+  <h2 class="titletext pull-left">Tag List</h2>
+</div>
+
+<div class="cloud">
+  <span ng-repeat="ob in tags">
+    <a class="tag{{ob.weight}}" href="/tag/{{ob.key}}">{{ob.key}}&nbsp;({{ob.count}})</a>
+  </span>
+</div>
+
+<hr />
+
+<div ng-include src="'/static/partials/newbug.html'"></div>

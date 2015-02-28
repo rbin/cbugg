@@ -1,0 +1,7 @@
+Subject: {{.Requester | shortName}} wants you to look at [{{.Bug.Id}}]: {{.Bug.Title}}
+
+{{.Requester}} thinks you should look at the bug "{{.Bug.Title}}".
+
+Learn more about it here:
+
+{{.BaseURL}}{{.Bug.Url}}

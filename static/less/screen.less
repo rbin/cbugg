@@ -1,0 +1,297 @@
+[ng\:cloak], [ng-cloak], .ng-cloak {
+  display: none !important;
+}
+
+.app {
+    margin-top: 48px;
+}
+
+.hand {
+    cursor: pointer;
+}
+
+.tag {
+    margin-left: 3px;
+}
+
+.navbar .brand:hover {
+    color: #600;
+}
+
+.uimg {
+    margin-top: 4px;
+}
+
+/*Codemirror won't update if hidden by display: none. */
+.edithide {
+    position: absolute;
+    top: -9999px;
+}
+
+.titlearea {
+    font-size: 31.5px;
+    font-weight: bold;
+    line-height: 40px;
+
+}
+
+.titlearea.private {
+    background: #f99;
+}
+
+.titletext {
+    max-width: 90%;
+}
+
+.title-input {
+    width: 600px;
+    height: 26px;
+    font-weight: bold;
+}
+
+input[name="title"] {
+    min-width: 30em;
+}
+
+.comment.private-true .author {
+    background: #fcc;
+}
+
+.comment-text {
+    margin-top: 1em;
+}
+
+.subs {
+      padding-right: 5px;
+      font-size: 0.6em;
+}
+
+#history {
+         float: right;
+}
+
+.starred {
+    color: #ffcc00;
+}
+
+.sup {
+    font-size: 0.65em;
+    vertical-align: super;
+}
+
+.CodeMirror {
+  border: 1px solid #eee;
+  height: auto;
+  min-height: 3em;
+}
+.CodeMirror-scroll {
+  overflow-y: hidden;
+  overflow-x: auto;
+}
+
+
+table { border-collapse: collapse; }
+.percent {
+    position: absolute; width: 300px; height: 14px; z-index: 1; text-align: center; font-size: 0.8em; color: white;
+}
+.progress-bar {
+    width: 300px; height: 14px;
+    border-radius: 10px;
+    border: 1px solid #CCC;
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#6666cc), to(#4b4b95));
+    border-image: initial;
+}
+.uploaded {
+    padding: 0;
+    height: 14px;
+    border-radius: 10px;
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#66cc00), to(#4b9500));
+    border-image: initial;
+}
+.dropbox {
+    width: 15em;
+    height: 3em;
+    border: 2px solid #DDD;
+    border-radius: 8px;
+    background-color: #FEFFEC;
+    text-align: center;
+    color: #BBB;
+    font-size: 2em;
+    font-family: Arial, sans-serif;
+}
+.dropbox span {
+    margin-top: 0.9em;
+    display: block;
+}
+.dropbox.not-available {
+    background-color: #F88;
+}
+.dropbox.over {
+    background-color: #bfb;
+}
+
+form {
+  margin-bottom: 8px;
+}
+
+.popover {
+  overflow: hidden;
+}
+
+.popover .form-actions {
+  margin: 4px -14px -12px;
+  padding: 9px 10px 10px;
+  border-radius: 0 0 5px 5px;
+}
+
+.popover {
+  input { width: 170px; margin-left:10px; }
+}
+
+.status-resolved, .status-closed {
+  text-decoration: line-through;
+}
+
+div.cloud {
+  font-size: 36px;
+  line-height: 40px;
+
+  .tag.0 {
+      background: inherit;
+      color: blue;
+      font-size: 250%;
+  }
+
+  .tag1 {
+      background: inherit;
+      color: #22f;
+      font-size: 200%;
+  }
+
+  .tag2 {
+      background: inherit;
+      color: #66f;
+      font-size: 100%;
+  }
+
+  .tag3 {
+      background: inherit;
+      color: #88f;
+      font-size: 70%;
+  }
+
+  .tag4 {
+      background: inherit;
+      color: #bbf;
+      font-size: 50%;
+  }
+}
+
+.searchResultRowFooter {
+    padding-left: 15px;
+    font-size: 80%;
+    line-height: 12px;
+}
+
+td.bugCheckbox {
+    text-align: center;
+}
+
+td.bugId {
+    white-space:nowrap;
+}
+
+.search-toolbar {
+    margin-top: 0px;
+}
+
+.searchResultStar {
+    float: right;
+}
+
+.ellipsis {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.bugTitle {
+    font-weight: bold;
+    margin-bottom: 3px;
+    line-height: 15px;
+}
+
+.rounded-corners (@radius: 5px) {
+  -webkit-border-radius: @radius;
+  -moz-border-radius: @radius;
+  -ms-border-radius: @radius;
+  -o-border-radius: @radius;
+  border-radius: @radius;
+}
+
+.buglist-tag {
+    color: #777;
+    background: #ddf;
+    font-size: 8px;
+    margin-right: 5px;
+    padding: 3px;
+    .rounded-corners(3px);
+}
+.bugpage-tag {
+    color: #777;
+    background: #ddf;
+    margin-right: 5px;
+    padding: 3px;
+    .rounded-corners(3px);
+}
+
+.killtag {
+    margin-right: 4px;
+    margin-left: -6px;
+    color: #fbb;
+    background: #fff;
+}
+.killtag:hover {
+    color: #f44;
+    text-decoration: none;
+}
+
+.killuser {
+    color: #fbb;
+    background: #fff;
+}
+.killuser:hover {
+    color: #f44;
+    text-decoration: none;
+}
+
+.connected {
+    color: #059e42;
+}
+
+.disconnected {
+    color: #9e0505;
+}
+
+.search-results-form {
+    width: 80%;
+}
+
+/**
+ *  growl style notifications
+ *  css taken and modified from ui.notify
+ *  http://www.erichynds.com/jquery/a-jquery-ui-growl-ubuntu-notification-widget/
+ */
+.cbugg-growl { width:350px; position:fixed; top:50px; right:10px; z-index: 100;}
+.cbugg-growl-message { padding:10px; margin-bottom:15px; -moz-border-radius:8px; -webkit-border-radius:8px; border-radius:8px }
+.cbugg-growl-message h1 { font-size:14px; margin:0; padding:0; line-height: normal;}
+.cbugg-growl-message p { margin:3px 0; padding:0; line-height:18px; font-size: 12px;}
+.cbugg-growl-message:last-child { margin-bottom:0 }
+.cbugg-growl-message-style { background:#000; background:rgba(0,0,0,0.8); -moz-box-shadow: 0 0 6px #000; -webkit-box-shadow: 0 0 6px #000; box-shadow: 0 0 6px #000; }
+.cbugg-growl-message-style h1 { color:#fff; font-weight:bold; }
+.cbugg-growl-message-style p { color:#fff }
+.cbugg-growl-close { color:#fff; text-decoration:underline }
+.cbugg-growl-click { cursor:pointer }
+.cbugg-growl-cross { margin-top:-4px; float:right; cursor:pointer; text-decoration:none; font-size:12px; font-weight:bold; text-shadow:0 1px 1px #fff; padding:2px }
+.cbugg-growl-cross:hover { color:#ffffab }
+.cbugg-growl-cross:active { position:relative; top:1px }

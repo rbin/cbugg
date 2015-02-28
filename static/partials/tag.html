@@ -1,0 +1,39 @@
+<div class="titlearea clearfix">
+  <h2 class="titletext pull-left">Tag {{tag.name}}</h2>
+
+  <div class="subs pull-right">
+    <a title="Click to stop watching this tag" ng-show="subscribed" ng-click="unsubscribe()">
+      <i class="icon-star starred"></i>
+    </a>
+    <a title="Click to watch this tag."  ng-hide="subscribed" ng-click="subscribe()">
+      <i class="icon-star-empty muted"></i>
+    </a>
+    ({{subcount}})
+  </div>
+</div>
+
+Counts by state for bugs tagged {{tag.name}}.
+
+<li ng-repeat="ob in states">
+  <a href="/search/status:{{ob[0]}}%20AND%20tags:{{tag.name}}">{{ob[0]}} ({{ob[1]}})</a>
+</li>
+
+<hr />
+
+<div ng-show="currentuser.internal">
+  <h2>Styling</h2>
+
+  <style id="dynamicstyle">
+  </style>
+
+  <p>The tags look like this:  <span class="bugpage-tag tag-{{tag.name}}">{{tag.name}}</span></p>
+
+  Foreground Color: <input ng-model="tag.fgcolor" ng-change="csschanged()"><br/>
+  Background Color: <input ng-model="tag.bgcolor" ng-change="csschanged()"><br/>
+
+  <button ng-show="cssdirty" ng-click="updatecss()">Save</button>
+
+  <hr />
+</div>
+
+<div ng-include src="'/static/partials/newbug.html'"></div>
